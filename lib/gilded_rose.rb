@@ -10,13 +10,17 @@ class GildedRose
   def tick
     case name
     when 'Normal Item'
-      return normal_tick
+      @item = Normal.new(quality, days_remaining)
+      item.tick
     when 'Aged Brie'
-      return brie_tick
+      @item = Brie.new(quality, days_remaining)
+      item.tick
     when 'Sulfuras, Hand of Ragnaros'
-      return sulfuras_tick
+      @item = Sulfuras.new(quality, days_remaining)
+      item.tick
     when 'Backstage passes to a TAFKAL80ETC concert'
-      return backstage_tick
+      @item = Backstage.new(quality, days_remaining)
+      item.tick
     end
   end
 
