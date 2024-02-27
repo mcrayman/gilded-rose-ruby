@@ -10,7 +10,7 @@ class GildedRose
   def tick
 
     case name
-    when 'normal'
+    when 'Normal Item'
       return normal_tick
     when 'Aged Brie'
       return brie_tick
