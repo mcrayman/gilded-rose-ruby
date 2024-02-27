@@ -1,47 +1,70 @@
 class GildedRose
-  attr_reader :name, :days_remaining, :quality
+  attr_reader :item
 
-  def initialize(name:, days_remaining:, quality:)
-    @name = name
-    @days_remaining = days_remaining
-    @quality = quality
+  def initialize(name, quality, days_remaining)
+    @item = klass_for(name).new(quality, days_remaining)
+
   end
 
-  def tick
+  def klass_for(name)
     case name
     when 'Normal Item'
-      @item = Normal.new(quality, days_remaining)
-      item.tick
+      Normal
     when 'Aged Brie'
-      @item = Brie.new(quality, days_remaining)
-      item.tick
+      Brie
     when 'Sulfuras, Hand of Ragnaros'
-      @item = Sulfuras.new(quality, days_remaining)
-      item.tick
+      Sulfuras
     when 'Backstage passes to a TAFKAL80ETC concert'
-      @item = Backstage.new(quality, days_remaining)
-      item.tick
+      Backstage
     end
   end
 
-  def normal_tick
-    @item = Normal.new(quality, days_remaining)
+  def tick
     item.tick
   end
+
+  def quality
+    item.quality
+  end
+
+  def days_remaining
+    item.days_remaining
+  end
+
+
+  # def normal_tick
+  #   @item = Normal.new(quality, days_remaining)
+  #   item.tick
+  # end
   
-  def brie_tick
-    @item = Brie.new(quality, days_remaining)
-    item.tick
-  end
+  # def brie_tick
+  #   @item = Brie.new(quality, days_remaining)
+  #   item.tick
+  # end
 
-  def sulfuras_tick
-    @item = Sulfuras.new(quality, days_remaining)
-    item.tick
-  end
+  # def sulfuras_tick
+  #   @item = Sulfuras.new(quality, days_remaining)
+  #   item.tick
+  # end
 
-  def backstage_tick
-    @item = Backstage.new(quality, days_remaining)
-    item.tick
+  # def backstage_tick
+  #   @item = Backstage.new(quality, days_remaining)
+  #   item.tick
+  # end
+  class Normal
+    attr_reader :quality, :days_remaining
+  
+    def initialize(quality, days_remaining)
+      @quality = quality
+      @days_remaining = days_remaining
+    end
+  
+    def tick
+      @days_remaining -= 1
+      return if @quality == 0
+      @quality -= 1
+      @quality -= 1 if @days_remaining <= 0
+    end
   end
 
   class Brie
@@ -91,18 +114,4 @@ class GildedRose
       @quality += 1 if @days_remaining <= 0 && @quality < 50
     end
   end
-
-class Normal
-  attr_reader :quality, :days_remaining
-
-  def initialize(quality, days_remaining)
-    @quality = quality
-    @days_remaining = days_remaining
-  end
-
-  def tick
-    @days_remaining -= 1
-    return if @quality == 0
-    @quality -= 1
-    @quality -= 1 if @days_remaining <= 0
-  end
+end
