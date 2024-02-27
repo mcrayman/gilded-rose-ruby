@@ -7,23 +7,36 @@ class GildedRose
     @quality = quality
   end
 
-  def tick
-
-    case name
-    when 'Normal Item'
-      return normal_tick
-    when 'Aged Brie'
-      return brie_tick
-    when 'Sulfuras, Hand of Ragnaros'
-      return sulfuras_tick
-    end
-
   def normal_tick
+    @item = Normal.new(quality, days_remaining)
+    itemtick
+  end
+
+class Normal
+  attr_reader :quality, :days_remaining
+
+  def initialize(quality, days_remaining)
+    @quality = quality
+    @days_remaining = days_remaining
+  end
+
+  def tick
     @days_remaining -= 1
     return if @quality == 0
     @quality -= 1
     @quality -= 1 if @days_remaining <= 0
   end
+
+  # def tick
+  #   case name
+  #   when 'Normal Item'
+  #     return normal_tick
+  #   when 'Aged Brie'
+  #     return brie_tick
+  #   when 'Sulfuras, Hand of Ragnaros'
+  #     return sulfuras_tick
+  #   end
+
 
   def brie_tick
     @days_remaining -= 1
@@ -43,5 +56,6 @@ class GildedRose
     @quality += 1
     @quality += 1 if @days_remaining <= 10
     @quality += 1 if @days_remaining <= 5
+    @quality += 1 if @days_remaining <= 0 && @quality < 50
   end
 end
