@@ -1,67 +1,18 @@
 class GildedRose
-  attr_reader :item
 
-  def self.new(name, quality, days_remaining)
-    @item = klass_for(name).new(quality, days_remaining)
-
-  end
-
-  def self.klass_for(name)
-    case name
-    when 'Normal Item'
-      Normal
-    when 'Aged Brie'
-      Brie
-    when 'Sulfuras, Hand of Ragnaros'
-      Sulfuras
-    when 'Backstage passes to a TAFKAL80ETC concert'
-      Backstage
-    end
-  end
-
-  # def tick
-  #   item.tick
-  # end
-
-  # def quality
-  #   item.quality
-  # end
-
-  # def days_remaining
-  #   item.days_remaining
-  # end
-
-
-  # def normal_tick
-  #   @item = Normal.new(quality, days_remaining)
-  #   item.tick
-  # end
-  
-  # def brie_tick
-  #   @item = Brie.new(quality, days_remaining)
-  #   item.tick
-  # end
-
-  # def sulfuras_tick
-  #   @item = Sulfuras.new(quality, days_remaining)
-  #   item.tick
-  # end
-
-  # def backstage_tick
-  #   @item = Backstage.new(quality, days_remaining)
-  #   item.tick
-  # end
   class Item
     attr_reader :quality, :days_remaining
-
+  
     def initialize(quality, days_remaining)
       @quality = quality
       @days_remaining = days_remaining
     end
+  
+    def tick
+    end
   end
 
-
-  class Normal
+  class Normal < Item
     attr_reader :quality, :days_remaining
   
     def tick
@@ -72,7 +23,7 @@ class GildedRose
     end
   end
 
-  class Brie
+  class Brie < Item
     attr_reader :quality, :days_remaining
 
     def tick
@@ -82,16 +33,8 @@ class GildedRose
       @quality += 1 if @days_remaining <= 0
     end
   end
-  
-  class Sulfuras
-    attr_reader :quality, :days_remaining
 
-    def tick
-      # Do nothing
-    end
-  end
-
-  class Backstage
+  class Backstage < Item
     attr_reader :quality, :days_remaining
 
     def tick
@@ -104,4 +47,21 @@ class GildedRose
       @quality += 1 if @days_remaining <= 0 && @quality < 50
     end
   end
+
+  def self.new(name, quality, days_remaining)
+    @item = klass_for(name).new(quality, days_remaining)
+    
+  end
+
+  DEFAULT_CLASS = Item
+  SPECIALIZED_CLASSES = {
+    "normal" => Normal,
+    "Aged Brie" => Brie,
+    "Backstage passes to a TAFKAL80ETC concert" => Backstage
+  }
+
+  def self.new(name, quality, days_remaining)
+    (SPECIALIZED_CLASSES[name] || DEFAULT_CLASS).new(quality, days_remaining)
+  end
+
 end
