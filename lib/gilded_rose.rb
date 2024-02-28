@@ -1,5 +1,4 @@
 class GildedRose
-
   class Item
     attr_reader :quality, :days_remaining
   
